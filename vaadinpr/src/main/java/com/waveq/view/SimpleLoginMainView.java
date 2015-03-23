@@ -45,10 +45,6 @@ public class SimpleLoginMainView  extends CustomComponent implements View {
         String yob = String.valueOf(getSession().getAttribute("yob"));
 
 
-
-
-
-        // And show the username
         text.setValue("Hello " + username +", " +email + " you were born " + yob);
     }
 }

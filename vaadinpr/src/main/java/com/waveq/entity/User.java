@@ -1,5 +1,6 @@
 package com.waveq.entity;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -11,6 +12,9 @@ public class User {
     String email;
     String password;
     Date yob;
+
+    public User() {
+    }
 
     public User(String username, String email, String password, Date yob) {
         this.username = username;

@@ -1,5 +1,6 @@
 package com.waveq.view;
 
+import com.vaadin.data.util.BeanItem;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.*;
@@ -58,6 +59,16 @@ public class SimpleLoginView extends CustomComponent implements View,
 //        PopupView popup = new PopupView("Login", loginForm);
 //        popup.setHideOnMouseOut(false);
 
+
+        User bean = new User("", "", "", new Date());
+
+//// Wrap it in a BeanItem
+//        BeanItem<User> item = new BeanItem<User>(bean);
+//
+//// Bind it to a component
+//        Form form = new Form();
+//        form.setItemDataSource(item);
+
         HorizontalLayout viewLayout = new HorizontalLayout(loginForm, registerForm);
         viewLayout.setSizeFull();
         viewLayout.setComponentAlignment(loginForm, Alignment.MIDDLE_CENTER);
@@ -95,23 +106,32 @@ public class SimpleLoginView extends CustomComponent implements View,
         }
 
         if (isValid) {
-            getSession().setAttribute("user", loggedUser.getUsername());
-            getSession().setAttribute("email", loggedUser.getEmail());
-
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            getSession().setAttribute("yob", sdf.format(loggedUser.getYob()));
-
-
-            getUI().getNavigator().navigateTo(SimpleLoginMainView.NAME);//
+            login(loggedUser);
         } else {
+            this.loginUser.setValue(null);
             this.loginPassword.setValue(null);
-            this.loginPassword.focus();
+            this.loginUser.focus();
         }
     }
 
     private void registerButton(Button.ClickEvent event) {
+        if (!registerMail.isValid() || !registerPassword.isValid() || !registerUser.isValid() || !registerYOB.isValid()) {
+            return;
+        }
+
         user = new User(registerUser.getValue(), registerMail.getValue(), registerPassword.getValue(), registerYOB.getValue());
         addUser(user);
+
+        login(user);
     }
 
+    private void login(User user) {
+        getSession().setAttribute("user", user.getUsername());
+        getSession().setAttribute("email", user.getEmail());
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        getSession().setAttribute("yob", sdf.format(user.getYob()));
+
+        getUI().getNavigator().navigateTo(SimpleLoginMainView.NAME);
+    }
 }

@@ -22,20 +22,12 @@ public class MyUI extends UI {
 
     @Override
     protected void init(VaadinRequest request) {
-
-        // Create a new instance of the navigator. The navigator will attach
-        // itself automatically to this view.
         new Navigator(this, this);
-
-        // The initial log view where the user can login to the application
         getNavigator().addView(SimpleLoginView.NAME, SimpleLoginView.class);//
 
-        // Add the main view of the application
         getNavigator().addView(SimpleLoginMainView.NAME,
                 SimpleLoginMainView.class);
 
-        // We use a view change handler to ensure the user is always redirected
-        // to the login view if the user is not logged in.
         getNavigator().addViewChangeListener(new ViewChangeListener() {
 
             @Override
@@ -66,44 +58,6 @@ public class MyUI extends UI {
             }
         });
     }
-
-//    FilesystemContainer docs = new FilesystemContainer(new File("D:\\\\Jape"));
-//    Table docList = new Table("Documents", docs);
-//    Label docView = new Label("", ContentMode.HTML);
-//
-//
-//    @Override
-//    protected void init(VaadinRequest vaadinRequest) {
-//        setContent(docList);
-//
-//        HorizontalSplitPanel split = new HorizontalSplitPanel();
-//        setContent(split);
-//        split.addComponent(docList);
-//        split.addComponent(docView);
-//        docList.setSizeFull();
-//
-//        docList.addValueChangeListener(new Property.ValueChangeListener() {
-//            @Override
-//            public void valueChange(Property.ValueChangeEvent valueChangeEvent) {
-//                docView.setPropertyDataSource(new TextFileProperty((File) valueChangeEvent.getProperty().getValue()));
-//            }
-//        });
-//        docList.setImmediate(true);
-//        docList.setSelectable(true);
-////        final VerticalLayout layout = new VerticalLayout();
-////        layout.setMargin(true);
-////        setContent(layout);
-////
-////        Button button = new Button("Click Me");
-////        button.addClickListener(new Button.ClickListener() {
-////            @Override
-////            public void buttonClick(ClickEvent event) {
-////                layout.addComponent(new Label("Thank yodu for dsadsaclicking"));
-////            }
-////        });
-////        layout.addComponent(button);
-//
-//    }
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
     @VaadinServletConfiguration(widgetset="com.waveq.MyAppWidgetset",ui = MyUI.class, productionMode = false)
