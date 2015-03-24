@@ -57,13 +57,24 @@
 			<version>${vaadin.version}</version>
 			<scope>provided</scope>
 		</dependency>
-		<!--
-		  Needed when using the widgetset optimizer (custom ConnectorBundleLoaderFactory).
-		  
-		  For widgetset compilation, vaadin-client-compiler is automatically added on the
-		  compilation classpath by vaadin-maven-plugin so normally there is no need for an
-		  explicit dependency.
-		-->
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <version>1</version>
+        </dependency>
+
+        <!--
+          Needed when using the widgetset optimizer (custom ConnectorBundleLoaderFactory).
+
+          For widgetset compilation, vaadin-client-compiler is automatically added on the
+          compilation classpath by vaadin-maven-plugin so normally there is no need for an
+          explicit dependency.
+        -->
 		<!--
 		<dependency>
 			<groupId>com.vaadin</groupId>
@@ -77,7 +88,12 @@
 			<artifactId>vaadin-themes</artifactId>
 			<version>${vaadin.version}</version>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>7.0</version>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>
