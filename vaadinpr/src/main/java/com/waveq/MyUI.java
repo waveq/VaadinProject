@@ -20,47 +20,47 @@ import com.waveq.view.SimpleLoginView;
 @Widgetset("com.waveq.MyAppWidgetset")
 public class MyUI extends UI {
 
-    @Override
-    protected void init(VaadinRequest request) {
-        new Navigator(this, this);
-        getNavigator().addView(SimpleLoginView.NAME, SimpleLoginView.class);//
+	@Override
+	protected void init(VaadinRequest request) {
+		new Navigator(this, this);
+		getNavigator().addView(SimpleLoginView.NAME, SimpleLoginView.class);//
 
-        getNavigator().addView(SimpleLoginMainView.NAME,
-                SimpleLoginMainView.class);
+		getNavigator().addView(SimpleLoginMainView.NAME,
+				SimpleLoginMainView.class);
 
-        getNavigator().addViewChangeListener(new ViewChangeListener() {
+		getNavigator().addViewChangeListener(new ViewChangeListener() {
 
-            @Override
-            public boolean beforeViewChange(ViewChangeEvent event) {
+			@Override
+			public boolean beforeViewChange(ViewChangeEvent event) {
 
-                // Check if a user has logged in
-                boolean isLoggedIn = getSession().getAttribute("user") != null;
-                boolean isLoginView = event.getNewView() instanceof SimpleLoginView;
+				// Check if a user has logged in
+				boolean isLoggedIn = getSession().getAttribute("user") != null;
+				boolean isLoginView = event.getNewView() instanceof SimpleLoginView;
 
-                if (!isLoggedIn && !isLoginView) {
-                    // Redirect to login view always if a user has not yet
-                    // logged in
-                    getNavigator().navigateTo(SimpleLoginView.NAME);
-                    return false;
+				if (!isLoggedIn && !isLoginView) {
+					// Redirect to login view always if a user has not yet
+					// logged in
+					getNavigator().navigateTo(SimpleLoginView.NAME);
+					return false;
 
-                } else if (isLoggedIn && isLoginView) {
-                    // If someone tries to access to login view while logged in,
-                    // then cancel
-                    return false;
-                }
+				} else if (isLoggedIn && isLoginView) {
+					// If someone tries to access to login view while logged in,
+					// then cancel
+					return false;
+				}
 
-                return true;
-            }
+				return true;
+			}
 
-            @Override
-            public void afterViewChange(ViewChangeListener.ViewChangeEvent event) {
+			@Override
+			public void afterViewChange(ViewChangeListener.ViewChangeEvent event) {
 
-            }
-        });
-    }
+			}
+		});
+	}
 
-    @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
-    @VaadinServletConfiguration(widgetset="com.waveq.MyAppWidgetset",ui = MyUI.class, productionMode = false)
-    public static class MyUIServlet extends VaadinServlet {
-    }
+	@WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
+	@VaadinServletConfiguration(widgetset = "com.waveq.MyAppWidgetset", ui = MyUI.class, productionMode = false)
+	public static class MyUIServlet extends VaadinServlet {
+	}
 }

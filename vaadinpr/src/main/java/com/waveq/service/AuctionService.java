@@ -20,13 +20,22 @@ public class AuctionService {
 		return 1;
 	}
 
-	public List getAuctions() {
+	public List<Auction> getAuctions() {
 		return auctions;
 	}
 
 	public long deleteAuction(Auction a) {
 		auctions.remove(auctions.indexOf(a));
 		return 1;
+	}
+
+	public boolean contains(Auction a) {
+		for(Auction auction : getAuctions()) {
+			if (auction.getName().equals(a.getName())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

@@ -32,5 +32,15 @@
 @mixin mytheme {
   @include valo;
 
+  .gridwithpics128px .imagecol {
+    height: 200px;
+    background: red;
+    text-align: center;
+  }
+
+  .v-grid-row {
+    height: 200px;
+  }
+
   // Insert your own theme rules here
 }
