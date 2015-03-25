@@ -33,14 +33,16 @@
   @include valo;
 
   .gridwithpics128px .imagecol {
-    height: 200px;
-    background: red;
+    background: orange;
     text-align: center;
   }
 
-  .v-grid-row {
-    height: 200px;
+
+
+  .v-grid-cell {
+    height: 300px;
   }
+
 
   // Insert your own theme rules here
 }

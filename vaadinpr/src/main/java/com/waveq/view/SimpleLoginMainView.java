@@ -81,11 +81,13 @@ public class SimpleLoginMainView extends CustomComponent implements View {
 		medium.addComponent(rightPanel);
 
 		rightPanel.addComponent(new Tree("Auctions"));
-		rightPanel.setWidth("600px");
+		rightPanel.setWidth("1400px");
 
 		BeanItemContainer<Auction> container =
 				new BeanItemContainer<Auction>(Auction.class, auctionService.getAuctions());
 		auctionsGrid = new Grid(container);
+		auctionsGrid.setWidth("1400");
+		auctionsGrid.setHeight("850");
 		auctionsGrid.setStyleName("gridwithpics128px");
 //		auctionsGrid.setCellStyleGenerator(cell ->
 //				"picture".equals(cell.getPropertyId())?
@@ -93,7 +95,6 @@ public class SimpleLoginMainView extends CustomComponent implements View {
 
 		auctionsGrid.setCellStyleGenerator(new Grid.CellStyleGenerator() {
 			public String getStyle(com.vaadin.ui.Grid.CellReference cellReference) {
-				System.out.println(cellReference.getPropertyId());
 				return cellReference.getPropertyId().equals("image") ? "imagecol" : null;}
 		});
 
@@ -148,7 +149,7 @@ public class SimpleLoginMainView extends CustomComponent implements View {
 //		}
 
 
-//		auctionsGrid.setColumnOrder("name", "price");
+		auctionsGrid.setColumnOrder("image", "name");
 		rightPanel.addComponent(auctionsGrid);
 	}
 
