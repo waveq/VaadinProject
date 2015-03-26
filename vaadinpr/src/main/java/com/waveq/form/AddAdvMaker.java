@@ -1,5 +1,6 @@
 package com.waveq.form;
 
+import com.vaadin.data.validator.AbstractValidator;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.TextField;
@@ -39,12 +40,12 @@ public class AddAdvMaker {
 	public VerticalLayout getAdvForm() {
 		name.setWidth("300px");
 		name.setRequired(true);
+		name.addValidator(new AdvValidator(false, "Name must be at least 3 characters."));
 		name.setInputPrompt("Name of your ad");
 		name.setInvalidAllowed(false);
 		name.setImmediate(true);
 
 		description.setWidth("500px");
-//		description.addValidator(new UsernameAndPasswordValidator(true, "Password must be at least 6 characters and contain at least 1 digit."));
 		description.setRequired(false);
 		description.setValue("");
 		description.setNullRepresentation("");
@@ -52,6 +53,7 @@ public class AddAdvMaker {
 
 		price.setWidth("300px");
 		price.setRequired(true);
+		price.addValidator(new AdvValidator(true, "Price must be a number."));
 		price.setInputPrompt("Price of your item");
 		price.setInvalidAllowed(false);
 		price.setImmediate(true);
@@ -67,5 +69,43 @@ public class AddAdvMaker {
 		advForm.setSizeUndefined();
 
 		return advForm;
+	}
+
+	private static final class AdvValidator extends AbstractValidator<String> {
+		private boolean isPrice;
+
+		public AdvValidator(boolean isPrice, String message) {
+			super(message);
+			this.isPrice = isPrice;
+		}
+
+		public static boolean isNumeric(String str) {
+			try {
+				double d = Double.parseDouble(str);
+			}
+			catch(NumberFormatException nfe) {
+				return false;
+			}
+			return true;
+		}
+
+		@Override
+		protected boolean isValidValue(String value) {
+			if (isPrice) {
+				if(!isNumeric(value)) {
+					return false;
+				}
+			} else {
+				if (value != null && (value.length() < 3)) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		@Override
+		public Class<String> getType() {
+			return String.class;
+		}
 	}
 }

@@ -54,7 +54,6 @@ public class AddAdvertView extends CustomComponent implements View, Button.Click
 
 	public AddAdvertView() {
 		auctionService = new AuctionService();
-		setSizeFull();
 		AddAdvMaker advFormMaker = new AddAdvMaker(receiver, receiver, this);
 		advForm = advFormMaker.getAdvForm();
 

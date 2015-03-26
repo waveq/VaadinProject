@@ -7,7 +7,7 @@ import com.vaadin.server.ThemeResource;
  */
 public class Auction {
 
-	private int price;
+	private double price;
 	private String name;
 	private String description;
 	private String image;
@@ -20,7 +20,7 @@ public class Auction {
 		this.image = image;
 	}
 
-	public int getPrice() {
+	public double getPrice() {
 		return price;
 	}
 
