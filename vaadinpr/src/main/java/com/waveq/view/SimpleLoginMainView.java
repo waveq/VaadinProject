@@ -1,11 +1,9 @@
 package com.waveq.view;
 
-import com.vaadin.client.ui.VGridLayout;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.converter.Converter;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.server.ClassResource;
 import com.vaadin.server.Resource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.*;
@@ -20,21 +18,23 @@ import java.util.Locale;
  */
 public class SimpleLoginMainView extends CustomComponent implements View {
 
-	public static final String NAME = "";
+	public static final String LOGGED_IN = "";
 	private AuctionService auctionService;
 	private Grid auctionsGrid;
 	private Table auctionsTable;
 
-	Button logout = new Button("Logout", new Button.ClickListener() {
-
+	Button add = new Button("Add advert", new Button.ClickListener() {
 		@Override
 		public void buttonClick(Button.ClickEvent event) {
+			getUI().getNavigator().navigateTo(AddAdvertView.ADD_ADV);
+		}
+	});
 
-			// "Logout" the user
+	Button logout = new Button("Logout", new Button.ClickListener() {
+		@Override
+		public void buttonClick(Button.ClickEvent event) {
 			getSession().setAttribute("user", null);
-
-			// Refresh this view, should redirect to loggedIn view
-			getUI().getNavigator().navigateTo(NAME);
+			getUI().getNavigator().navigateTo(LOGGED_IN);
 		}
 	});
 	Label text = new Label();
@@ -51,8 +51,8 @@ public class SimpleLoginMainView extends CustomComponent implements View {
 	}
 
 	private void prepareAuctions() {
-		for(int i=0;i<10;i++) {
-			Auction a = new Auction(300+i*10, "Auction name"+i, "Description "+i, "hhead.png");
+		for(int i=0;i<2;i++) {
+			Auction a = new Auction(300+i*10, "Auction name"+i, "Description "+i, "xxhdpi.png ");
 			if(!auctionService.contains(a)) {
 				auctionService.addAuction(a);
 			}
@@ -74,6 +74,7 @@ public class SimpleLoginMainView extends CustomComponent implements View {
 		leftPanel.addComponent(new Tree("Menu"));
 		leftPanel.setWidth("300px");
 		leftPanel.addComponent(logout);
+		leftPanel.addComponent(add);
 	}
 
 	private void addRightBox(HorizontalLayout medium) {
@@ -98,23 +99,6 @@ public class SimpleLoginMainView extends CustomComponent implements View {
 				return cellReference.getPropertyId().equals("image") ? "imagecol" : null;}
 		});
 
-//		table.setCellStyleGenerator(new Table.CellStyleGenerator() {
-//			public String getStyle(Object itemId, Object propertyId) {
-//				int row = ((Integer) itemId).intValue();
-//				int col = Integer.parseInt((String) propertyId);
-//
-//				if (table.getItem(row).getItemProperty(col).getValue.equals("ANOM1") {
-//					return "red"
-//				}
-//				return "normal";
-//			}
-//		});
-
-//		auctionsGrid.addColumn("Price", Integer.class);
-//		auctionsGrid.addColumn("Name", String.class);
-//		auctionsGrid.addColumn("Description", String.class);
-//		auctionsGrid.addColumn("Picture", String.class);
-
 		// Set the image renderer
 		auctionsGrid.getColumn("image").setRenderer(new ImageRenderer(),
 				new Converter<Resource, String>() {
@@ -129,7 +113,7 @@ public class SimpleLoginMainView extends CustomComponent implements View {
 					public Resource convertToPresentation(String value,
 					                                      Class<? extends Resource> targetType, Locale l)
 							throws Converter.ConversionException {
-						return new ThemeResource("img/" + value);
+						return new ThemeResource("img\\" + value);
 					}
 
 					@Override
@@ -143,10 +127,7 @@ public class SimpleLoginMainView extends CustomComponent implements View {
 					}
 				});
 
-//		for(Auction a : auctionService.getAuctions()) {
-//			auctionsGrid.addRow(a.getPrice(), a.getName(), a.getDescription(), a.getImage());
-////			auctionsGrid.addRow(200, "Robak", "Zielony Robak", "hhead.png");
-//		}
+
 
 
 		auctionsGrid.setColumnOrder("image", "name");
@@ -172,3 +153,25 @@ public class SimpleLoginMainView extends CustomComponent implements View {
 		text.setValue("Hello " + username + ", " + email + " you were born " + yob);
 	}
 }
+
+//		table.setCellStyleGenerator(new Table.CellStyleGenerator() {
+//			public String getStyle(Object itemId, Object propertyId) {
+//				int row = ((Integer) itemId).intValue();
+//				int col = Integer.parseInt((String) propertyId);
+//
+//				if (table.getItem(row).getItemProperty(col).getValue.equals("ANOM1") {
+//					return "red"
+//				}
+//				return "normal";
+//			}
+//		});
+//
+//		auctionsGrid.addColumn("Price", Integer.class);
+//		auctionsGrid.addColumn("Name", String.class);
+//		auctionsGrid.addColumn("Description", String.class);
+//		auctionsGrid.addColumn("Picture", String.class);
+//
+//		for(Auction a : auctionService.getAuctions()) {
+//			auctionsGrid.addRow(a.getPrice(), a.getName(), a.getDescription(), a.getImage());
+//			auctionsGrid.addRow(200, "Robak", "Zielony Robak", "hhead.png");
+//		}

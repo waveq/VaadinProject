@@ -17,7 +17,7 @@ import java.util.Date;
  */
 public class SimpleLoginView extends CustomComponent implements View,
 		Button.ClickListener {
-	public static final String NAME = "login";
+	public static final String LOGGED_OUT = "login";
 	private final TextField loginUser;
 	private final PasswordField loginPassword;
 	private final Button loginButton;
@@ -119,6 +119,6 @@ public class SimpleLoginView extends CustomComponent implements View,
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		getSession().setAttribute("yob", sdf.format(user.getYob()));
 
-		getUI().getNavigator().navigateTo(SimpleLoginMainView.NAME);
+		getUI().getNavigator().navigateTo(SimpleLoginMainView.LOGGED_IN);
 	}
 }

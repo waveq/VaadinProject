@@ -10,6 +10,7 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.*;
+import com.waveq.view.AddAdvertView;
 import com.waveq.view.SimpleLoginMainView;
 import com.waveq.view.SimpleLoginView;
 
@@ -23,10 +24,12 @@ public class MyUI extends UI {
 	@Override
 	protected void init(VaadinRequest request) {
 		new Navigator(this, this);
-		getNavigator().addView(SimpleLoginView.NAME, SimpleLoginView.class);//
+		getNavigator().addView(SimpleLoginView.LOGGED_OUT, SimpleLoginView.class);//
 
-		getNavigator().addView(SimpleLoginMainView.NAME,
+		getNavigator().addView(SimpleLoginMainView.LOGGED_IN,
 				SimpleLoginMainView.class);
+
+		getNavigator().addView(AddAdvertView.ADD_ADV, AddAdvertView.class);
 
 		getNavigator().addViewChangeListener(new ViewChangeListener() {
 
@@ -40,7 +43,7 @@ public class MyUI extends UI {
 				if (!isLoggedIn && !isLoginView) {
 					// Redirect to login view always if a user has not yet
 					// logged in
-					getNavigator().navigateTo(SimpleLoginView.NAME);
+					getNavigator().navigateTo(SimpleLoginView.LOGGED_OUT);
 					return false;
 
 				} else if (isLoggedIn && isLoginView) {
