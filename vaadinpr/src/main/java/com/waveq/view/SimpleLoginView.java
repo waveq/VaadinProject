@@ -1,5 +1,7 @@
 package com.waveq.view;
 
+import com.vaadin.data.fieldgroup.FieldGroup;
+import com.vaadin.data.util.BeanItem;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.*;
@@ -28,10 +30,17 @@ public class SimpleLoginView extends CustomComponent implements View,
 	private final Button registerButton;
 	private LoginFormMaker loginFormMaker;
 	private UserService userService;
+	final FieldGroup binderLogin;
+	final FieldGroup binderRegister;
+	private Label lr;
+	private Label ll;
+	private User user = new User();
+	private BeanItem<User> userBeanItem = new BeanItem<User>(user);
 
 	public SimpleLoginView() {
 		userService = new UserService();
-		userService.addUser(new User("test", "test@test.com", "passw0rd", new Date()));
+		addUser(new User("test", "test@test.com", "passw0rd", new Date()));
+
 
 		setSizeFull();
 		loginFormMaker = new LoginFormMaker(this);
@@ -41,6 +50,14 @@ public class SimpleLoginView extends CustomComponent implements View,
 		loginPassword = (PasswordField) loginForm.getComponent(1);
 		loginButton = (Button) loginForm.getComponent(2);
 
+		binderLogin = new FieldGroup(userBeanItem);
+		binderLogin.bind(loginUser, "username");
+		binderLogin.bind(loginPassword, "password");
+
+		ll = new Label("Invalid password or username");
+		loginForm.addComponent(ll);
+		ll.setVisible(false);
+
 		VerticalLayout registerForm = loginFormMaker.getRegisterForm();
 
 		registerUser = (TextField) registerForm.getComponent(0);
@@ -48,9 +65,16 @@ public class SimpleLoginView extends CustomComponent implements View,
 		registerYOB = (DateField) registerForm.getComponent(2);
 		registerPassword = (PasswordField) registerForm.getComponent(3);
 		registerButton = (Button) registerForm.getComponent(4);
-//        PopupView popup = new PopupView("Login", loginForm);
-//        popup.setHideOnMouseOut(false);
 
+		lr = new Label("Username is already taken");
+		registerForm.addComponent(lr);
+		lr.setVisible(false);
+
+		binderRegister = new FieldGroup(userBeanItem);
+		binderRegister.bind(registerUser, "username");
+		binderRegister.bind(registerMail, "email");
+		binderRegister.bind(registerYOB, "yob");
+		binderRegister.bind(registerPassword, "password");
 
 		HorizontalLayout viewLayout = new HorizontalLayout(loginForm, registerForm);
 		viewLayout.setSizeFull();
@@ -62,7 +86,9 @@ public class SimpleLoginView extends CustomComponent implements View,
 	}
 
 	private void addUser(User u) {
-		userService.addUser(u);
+		if(!userService.contains(u)) {
+			userService.addUser(u);
+		}
 	}
 
 	@Override
@@ -79,14 +105,15 @@ public class SimpleLoginView extends CustomComponent implements View,
 	}
 
 	private void loginButton(Button.ClickEvent event) {
-		if (!loginUser.isValid() || !loginPassword.isValid()) {
-			return;
+		try {
+			binderLogin.commit();
+		} catch (FieldGroup.CommitException e) {
 		}
 
 		boolean isValid = false;
 		User loggedUser = null;
 		for (User u : userService.getUsers()) {
-			if (u.getUsername().equals(loginUser.getValue()) && u.getPassword().equals(loginPassword.getValue())) {
+			if (u.getUsername().equals(user.getUsername()) && u.getPassword().equals(user.getPassword())) {
 				isValid = true;
 				loggedUser = u;
 				break;
@@ -96,6 +123,7 @@ public class SimpleLoginView extends CustomComponent implements View,
 		if (isValid) {
 			login(loggedUser);
 		} else {
+			ll.setVisible(true);
 			this.loginUser.setValue(null);
 			this.loginPassword.setValue(null);
 			this.loginUser.focus();
@@ -103,13 +131,16 @@ public class SimpleLoginView extends CustomComponent implements View,
 	}
 
 	private void registerButton(Button.ClickEvent event) {
-		if (!registerMail.isValid() || !registerPassword.isValid() || !registerUser.isValid() || !registerYOB.isValid()) {
-			return;
+		try {
+			binderRegister.commit();
+			if (!userService.contains(user)) {
+				addUser(user);
+				login(user);
+			}else{
+				lr.setVisible(true);
+			}
+		} catch (FieldGroup.CommitException e) {
 		}
-
-		User user = new User(registerUser.getValue(), registerMail.getValue(), registerPassword.getValue(), registerYOB.getValue());
-		addUser(user);
-		login(user);
 	}
 
 	private void login(User user) {
@@ -117,7 +148,7 @@ public class SimpleLoginView extends CustomComponent implements View,
 		getSession().setAttribute("email", user.getEmail());
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		getSession().setAttribute("yob", sdf.format(user.getYob()));
+		getSession().setAttribute("yob", user.getYob());
 
 		getUI().getNavigator().navigateTo(SimpleLoginMainView.LOGGED_IN);
 	}

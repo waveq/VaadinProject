@@ -48,6 +48,9 @@ public class LoginFormMaker {
 		loginUser.setInputPrompt("Your username");
 		loginUser.setInvalidAllowed(false);
 		loginUser.setImmediate(true);
+		loginUser.setInputPrompt("Your username");
+		loginUser.setNullRepresentation("");
+
 
 		// Create the password input field
 		loginPassword.setWidth("300px");
@@ -81,6 +84,7 @@ public class LoginFormMaker {
 		registerUser.setInvalidAllowed(false);
 		registerUser.addValidator(new UsernameAndPasswordValidator(false, "Username must be at least 6 characters."));
 		registerUser.setImmediate(true);
+		registerUser.setNullRepresentation("");
 
 		registerMail.setWidth("300px");
 		registerMail.setRequired(true);
@@ -89,6 +93,7 @@ public class LoginFormMaker {
 		registerMail.setInputPrompt("Your mail (eg. joe@email.com)");
 		registerMail.setInvalidAllowed(false);
 		registerMail.setImmediate(true);
+		registerMail.setNullRepresentation("");
 
 		registerYOB.setWidth("300px");
 		registerYOB.setRequired(true);

@@ -1,5 +1,6 @@
 package com.waveq.service;
 
+import com.waveq.entity.Auction;
 import com.waveq.entity.User;
 
 import javax.inject.Singleton;
@@ -27,5 +28,15 @@ public class UserService {
 	public long deleteUser(User u) {
 		users.remove(users.indexOf(u));
 		return 1;
+	}
+
+	public boolean contains(User u) {
+		for(User user : getUsers()) {
+			System.out.println(user.getUsername()+" : "+u.getUsername());
+			if (user.getUsername().equals(u.getUsername())) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
