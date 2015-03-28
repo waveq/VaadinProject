@@ -1,5 +1,6 @@
 package com.waveq.view;
 
+import com.vaadin.annotations.Push;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.converter.Converter;
 import com.vaadin.navigator.View;
@@ -8,6 +9,7 @@ import com.vaadin.server.Resource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ImageRenderer;
+import com.waveq.broadcast.Broadcaster;
 import com.waveq.entity.Auction;
 import com.waveq.service.AuctionService;
 
@@ -16,6 +18,7 @@ import java.util.Locale;
 /**
  * Created by Szymon on 2015-03-14.
  */
+@Push
 public class SimpleLoginMainView extends CustomComponent implements View {
 
 	public static final String LOGGED_IN = "";
@@ -87,6 +90,8 @@ public class SimpleLoginMainView extends CustomComponent implements View {
 		BeanItemContainer<Auction> container =
 				new BeanItemContainer<Auction>(Auction.class, auctionService.getAuctions());
 		auctionsGrid = new Grid(container);
+		auctionsGrid.setEditorEnabled(true);
+
 		auctionsGrid.setWidth("1400");
 		auctionsGrid.setHeight("850");
 		auctionsGrid.setStyleName("gridwithpics128px");
